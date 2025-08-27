@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>YAMATORA WebAR Viewer</title>
+
+  <!-- A-Frame + AR.js -->
+  <script src="./libs/aframe.min.js"></script>
+  <script src="./libs/arjs/aframe-ar.js"></script>
+
+  <!-- Babylon.js -->
+  <script src="./libs/babylon/babylon.js"></script>
+  <script src="./libs/babylon/babylonjs.loaders.min.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+
+    a-scene {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+    }
+
+    #renderCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: transparent !important;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- A-Frame: カメラ映像 + マーカー検出 -->
+<a-scene
+  embedded
+  arjs="sourceType: webcam; debugUIEnabled: false;"
+  vr-mode-ui="enabled: false"
+  renderer="logarithmicDepthBuffer: true;"
+>
+  <a-marker id="marker" preset="hiro"></a-marker>
+  <a-entity camera></a-entity>
+</a-scene>
+
+<!-- Babylon.js描画 -->
+<canvas id="renderCanvas"></canvas>
+
+<script>
+  const canvas = document.getElementById("renderCanvas");
+  const engine = new BABYLON.Engine(canvas, true, {
+    preserveDrawingBuffer: true,
+    stencil: true
+  });
+
+  const scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);  // 背景透明
+
+  const camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 0, -5), scene);
+  camera.setTarget(BABYLON.Vector3.Zero());
+
+  const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+  let modelMesh = null;
+  BABYLON.SceneLoader.Append("", "italiachan.splat", scene, function () {
+    modelMesh = scene.meshes[0];
+    modelMesh.scaling = new BABYLON.Vector3(2, 2, 2);
+    modelMesh.setEnabled(false); // 初期非表示
+  }, null, function (_, msg) {
+    console.error("モデル読み込み失敗:", msg);
+  });
+
+  engine.runRenderLoop(() => {
+    scene.render();
+  });
+
+  window.addEventListener("resize", () => engine.resize());
+
+  // A-Frameのマーカーイベント
+  const markerEl = document.getElementById("marker");
+
+  markerEl.addEventListener("markerFound", () => {
+    console.log("マーカー検出");
+    if (modelMesh) modelMesh.setEnabled(true);
+  });
+
+  markerEl.addEventListener("markerLost", () => {
+    console.log("マーカー見失い");
+    if (modelMesh) modelMesh.setEnabled(false);
+  });
+
+  // Babylonモデルをマーカーに同期
+  const aframeScene = document.querySelector("a-scene");
+  aframeScene.addEventListener("renderstart", () => {
+    const tick = () => {
+      if (modelMesh && markerEl.object3D.visible) {
+        const pos = markerEl.object3D.position;
+        const rot = markerEl.object3D.rotation;
+
+        modelMesh.position.set(pos.x, pos.y, pos.z);
+        modelMesh.rotation.set(rot.x, rot.y, rot.z);
+      }
+      requestAnimationFrame(tick);
+    };
+    tick();
+  });
+</script>
+
+</body>
+</html>
