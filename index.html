@@ -125,7 +125,6 @@
 
 
 
-        /*
 const distance = pos.length();  // カメラからの距離
 const minScale = 0.1;  // 遠いときのサイズ
 const maxScale = 1.5;  // 近いときのサイズ
@@ -139,9 +138,9 @@ t = Math.min(Math.max(t, 0), 1); // 0〜1にクランプ
 // スケールを補間
 const scaleFactor = maxScale * (1 - t) + minScale * t;
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
-*/
 
-  modelMesh.scaling.set(0.1, 0.1, 0.1);
+        
+    // modelMesh.scaling.set(0.1, 0.1, 0.1);
         
     // ************
     // DEBUG INFO
