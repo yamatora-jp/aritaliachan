@@ -34,6 +34,34 @@
 </head>
 <body>
 
+
+
+// ************
+  
+  <canvas id="renderCanvas"></canvas>
+  <!-- デバッグ表示用 -->
+  <div id="debugInfo" 
+       style="position:absolute; top:10px; left:10px; 
+              color:#0f0; background:rgba(0,0,0,0.5); 
+              padding:5px; font-family:monospace; font-size:16px;">
+    distance: 0
+  </div>
+  <script>
+    // Babylon.js 初期化コード ...
+
+    const debugInfo = document.getElementById("debugInfo");
+
+    scene.onBeforeRenderObservable.add(() => {
+      const distance = pos.length();
+      debugInfo.textContent = "distance: " + distance.toFixed(2);
+    });
+  </script>
+
+// ************
+
+  
+
+  
 <!-- A-Frame: カメラ映像 + マーカー検出 -->
 <a-scene
   embedded
@@ -106,7 +134,7 @@
 
 
 
-        
+        /*
 const distance = pos.length();  // カメラからの距離
 const minScale = 0.1;  // 遠いときのサイズ
 const maxScale = 1.5;  // 近いときのサイズ
@@ -120,7 +148,7 @@ t = Math.min(Math.max(t, 0), 1); // 0〜1にクランプ
 // スケールを補間
 const scaleFactor = maxScale * (1 - t) + minScale * t;
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
-
+*/
         
 
         
