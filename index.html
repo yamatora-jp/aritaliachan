@@ -136,10 +136,10 @@ let scaleFactor;
 
 if (distance >= far) {
   // 近すぎるときは最大サイズ固定
-  scaleFactor = maxScale;
+  scaleFactor = minScale;
 } else if (distance <= near) {
   // 遠すぎるときは最小サイズ固定
-  scaleFactor = minScale;
+  scaleFactor = maxScale;
 } else {
   // near～far の間なら割合で計算
   const ratio = (distance - near) / (far - near); // 0〜1
