@@ -155,7 +155,7 @@ if (distance < 3) {
   scaleFactor = 0.1;
 } else {
   // 3～4の間は線形補間
-  scaleFactor = 0.5 - (distance - 3) * (0.5 - 0.1) / (4 - 3);
+  scaleFactor = 0.1 + (distance - 3) * (0.5 - 0.1) / (4 - 3);
 }
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
 
