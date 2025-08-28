@@ -48,23 +48,6 @@
     Debug Info
   </div>
 
-  <script>
-    // Babylon.js 初期化コード ...
-
-    const debugInfo = document.getElementById("debugInfo");
-
-    scene.onBeforeRenderObservable.add(() => {
-      const distance = pos.length();
-      const scale = modelMesh.scaling;  // X, Y, Z のスケール
-      const position = modelMesh.position; // モデル座標
-
-      debugInfo.textContent = 
-        "distance: " + distance.toFixed(2) + "\n" +
-        "scale   : (" + scale.x.toFixed(2) + ", " + scale.y.toFixed(2) + ", " + scale.z.toFixed(2) + ")\n" +
-        "pos     : (" + position.x.toFixed(2) + ", " + position.y.toFixed(2) + ", " + position.z.toFixed(2) + ")";
-    });
-  </script>
-
 // ************
 
   
@@ -157,8 +140,28 @@ t = Math.min(Math.max(t, 0), 1); // 0〜1にクランプ
 const scaleFactor = maxScale * (1 - t) + minScale * t;
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
 */
-        
 
+// ************
+
+        
+    // Babylon.js 初期化コード ...
+
+    const debugInfo = document.getElementById("debugInfo");
+
+    scene.onBeforeRenderObservable.add(() => {
+      const distance = pos.length();
+      const scale = modelMesh.scaling;  // X, Y, Z のスケール
+      const position = modelMesh.position; // モデル座標
+
+      debugInfo.textContent = 
+        "distance: " + distance.toFixed(2) + "\n" +
+        "scale   : (" + scale.x.toFixed(2) + ", " + scale.y.toFixed(2) + ", " + scale.z.toFixed(2) + ")\n" +
+        "pos     : (" + position.x.toFixed(2) + ", " + position.y.toFixed(2) + ", " + position.z.toFixed(2) + ")";
+    });
+
+// ************
+
+  
         
         
       }
