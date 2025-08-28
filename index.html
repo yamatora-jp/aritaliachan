@@ -66,7 +66,8 @@
   let modelMesh = null;
   BABYLON.SceneLoader.Append("", "italiachan.splat", scene, function () {
     modelMesh = scene.meshes[0];
-    modelMesh.scaling = new BABYLON.Vector3(2, 2, 2);
+//  modelMesh.scaling = new BABYLON.Vector3(2, 2, 2);
+    modelMesh.scaling = new BABYLON.Vector3(5, 5, 5);
     modelMesh.setEnabled(false); // 初期非表示
   }, null, function (_, msg) {
     console.error("モデル読み込み失敗:", msg);
