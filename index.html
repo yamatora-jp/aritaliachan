@@ -127,9 +127,9 @@
 
 const distance = pos.length();  // カメラからの距離
 const minScale = 0.1;  // 遠いときのサイズ
-const maxScale = 1.5;  // 近いときのサイズ
+const maxScale = 0.6;  // 近いときのサイズ
 const near = 1.0;      // これ以上近いと最大サイズ
-const far  = 10.0;     // これ以上遠いと最小サイズ
+const far  = 2.0;     // これ以上遠いと最小サイズ
 
 // 距離を 0〜1 に正規化
 let t = (distance - near) / (far - near);
