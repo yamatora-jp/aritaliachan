@@ -124,20 +124,30 @@
         modelMesh.rotation.set(rot.x + Math.PI, rot.y + Math.PI, rot.z);
 
 
-
+// 離すと大きく
+// 近づけると小さくなる
 const distance = pos.length();  // カメラからの距離
 const minScale = 0.1;  // 遠いときのサイズ
-const maxScale = 0.6;  // 近いときのサイズ
-const near = 1.0;      // これ以上近いと最大サイズ
-const far  = 2.0;     // これ以上遠いと最小サイズ
+const maxScale = 0.5;  // 近いときのサイズ
+const near = 3.0;      // これ以上近いと最大サイズ
+const far  = 4.0;      // これ以上遠いと最小サイズ
 
-// 距離を 0〜1 に正規化
-let t = (distance - near) / (far - near);
-t = Math.min(Math.max(t, 0), 1); // 0〜1にクランプ
+let scaleFactor;
 
-// スケールを補間
-const scaleFactor = maxScale * (1 - t) + minScale * t;
+if (distance >= near) {
+  // 近すぎるときは最大サイズ固定
+  scaleFactor = maxScale;
+} else if (distance <= far) {
+  // 遠すぎるときは最小サイズ固定
+  scaleFactor = minScale;
+} else {
+  // near～far の間なら割合で計算
+  const ratio = (distance - near) / (far - near); // 0〜1
+  scaleFactor = maxScale - (maxScale - minScale) * ratio;
+}
+
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
+        
 
         
     // modelMesh.scaling.set(0.1, 0.1, 0.1);
@@ -152,7 +162,9 @@ modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
       debugInfo.textContent = 
         "distance: " + distance.toFixed(2) + "\n" +
         "scale   : (" + scale.x.toFixed(2) + ", " + scale.y.toFixed(2) + ", " + scale.z.toFixed(2) + ")\n" +
-        "pos     : (" + position.x.toFixed(2) + ", " + position.y.toFixed(2) + ", " + position.z.toFixed(2) + ")";
+        "pos     : (" + position.x.toFixed(2) + ", " + position.y.toFixed(2) + ", " + position.z.toFixed(2) + ")\n" +
+        "scale   : (" +  scaleFactor + ")";
+
     });
     // ************
      
