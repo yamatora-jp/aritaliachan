@@ -103,6 +103,19 @@
         modelMesh.position.set(pos.x, pos.y, pos.z);
       //modelMesh.rotation.set(rot.x, rot.y, rot.z);
         modelMesh.rotation.set(rot.x + Math.PI, rot.y + Math.PI, rot.z);
+
+
+            // === 追加部分：距離に応じたスケール ===
+            // カメラとの距離を計算
+            const distance = pos.length();  // pos はカメラ基準の位置
+            const minScale = 0.5;          // 遠くにあるときの最小サイズ
+            const maxScale = 2.0;          // 近くにあるときの最大サイズ
+            const scaleFactor = Math.min(Math.max(maxScale / distance, minScale), maxScale);
+
+    modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
+
+        
+        
       }
       requestAnimationFrame(tick);
     };
