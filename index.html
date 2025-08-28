@@ -127,7 +127,7 @@
 // 離すと大きく
 // 近づけると小さくなる
 const distance = pos.length();  // カメラからの距離
-const minScale = 0.1;  // 遠いときのサイズ
+/*const minScale = 0.1;  // 遠いときのサイズ
 const maxScale = 0.5;  // 近いときのサイズ
 const near = 3.0;      // これ以上近いと最大サイズ
 const far  = 4.0;      // これ以上遠いと最小サイズ
@@ -147,7 +147,16 @@ if (distance >= far) {
   scaleFactor = maxScale - (maxScale - minScale) * ratio;
 }
 
+modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);*/
+
+if (distance < 3) {
+    scaleFactor = 0.5;
+}
+else {
+    scaleFactor = 0.1;
+}
 modelMesh.scaling.set(scaleFactor, scaleFactor, scaleFactor);
+
         
 
         
